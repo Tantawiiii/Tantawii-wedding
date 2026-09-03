@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fbf7f0;
+  --bg-2: #f5ede0;
+  --surface: #ffffff;
+  --ink: #3d3226;
+  --muted: #8a7c68;
+  --gold: #b9895a;
+  --gold-light: #d8ac7c;
+  --gold-dim: #8f6a44;
+  --rose: #c98a8a;
+  --line: rgba(185, 137, 90, 0.18);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dim: var(--gold-dim);
+  --color-rose: var(--rose);
+  --font-amiri: var(--font-amiri);
+  --font-aref: var(--font-aref);
+  --font-reem: var(--font-reem);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-light) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-light);
+  border-radius: 8px;
+}
+
+.font-display {
+  font-family: var(--font-aref), serif;
+}
+
+.font-body {
+  font-family: var(--font-amiri), serif;
+}
+
+.font-kufi {
+  font-family: var(--font-reem), sans-serif;
+}
+
+/* Soft paper backdrop */
+.paper-bg {
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 0%, rgba(185, 137, 90, 0.10), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 100% 30%, rgba(201, 138, 138, 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgba(185, 137, 90, 0.07), transparent 55%),
+    linear-gradient(180deg, var(--bg), var(--bg-2) 50%, var(--bg));
+}
+
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.5));
+  border: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.gold-line {
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  height: 1px;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(4deg); }
+}
+.float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+@keyframes floatSlow2 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-22px) rotate(-6deg); }
+}
+.float-slow-2 {
+  animation: floatSlow2 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, var(--gold-dim) 0%, var(--gold-light) 25%, var(--gold-dim) 50%, var(--gold-light) 75%, var(--gold-dim) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+.sparkle {
+  animation: sparkle 2.6s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.25); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.2); }
+  60% { transform: scale(1); }
+}
+.heartbeat {
+  animation: heartbeat 2.2s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(185, 137, 90, 0.35); }
+  70% { box-shadow: 0 0 0 22px rgba(185, 137, 90, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(185, 137, 90, 0); }
+}
+.pulse-ring {
+  animation: pulseRing 2.4s ease-out infinite;
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+.spin-slow {
+  animation: spinSlow 18s linear infinite;
+}
+
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(10px, -18px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+.drift {
+  animation: drift 9s ease-in-out infinite;
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.card-face {
+  backface-visibility: hidden;
+}
+
+.seal-wax {
+  background: radial-gradient(circle at 35% 30%, var(--rose), #a15a5a 70%);
+}
