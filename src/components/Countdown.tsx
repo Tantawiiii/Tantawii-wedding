@@ -35,16 +35,13 @@ export default function Countdown() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-5">
+    <div className="flex items-stretch justify-center divide-x divide-x-reverse divide-[var(--line)] rounded-2xl border border-[var(--line)] bg-surface">
       {units.map((u) => (
-        <div
-          key={u.key}
-          className="glass flex w-16 flex-col items-center rounded-2xl py-4 sm:w-20"
-        >
-          <span className="font-display text-2xl text-gold-dim sm:text-3xl">
+        <div key={u.key} className="flex w-20 flex-col items-center py-6 sm:w-24">
+          <span className="font-ui num-badge text-3xl font-semibold text-ink sm:text-4xl">
             {time ? String(time[u.key]).padStart(2, "0") : "--"}
           </span>
-          <span className="font-kufi mt-1 text-[11px] text-muted">{u.label}</span>
+          <span className="font-ui mt-2 text-[11px] text-muted">{u.label}</span>
         </div>
       ))}
     </div>
