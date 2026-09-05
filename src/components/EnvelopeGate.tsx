@@ -2,31 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-
-function FloralVine({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 400" fill="none" className={className}>
-      <path
-        d="M60 10C55 60 65 100 58 150C51 200 62 240 56 290C50 340 60 370 58 395"
-        stroke="var(--accent)"
-        strokeWidth="1.2"
-        opacity="0.3"
-      />
-      {[45, 90, 135, 180, 225, 270, 315, 355].map((y, i) => (
-        <g
-          key={y}
-          transform={`translate(60 ${y}) scale(${i % 2 === 0 ? 1 : -1}, 1) rotate(${i % 2 === 0 ? 25 : -25})`}
-        >
-          <path
-            d="M0 0C8 -10 22 -12 30 -4C22 4 8 8 0 0Z"
-            fill="var(--accent)"
-            opacity={0.18}
-          />
-        </g>
-      ))}
-    </svg>
-  );
-}
+import BlobField from "./BlobField";
 
 export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
   const [opening, setOpening] = useState(false);
@@ -46,89 +22,92 @@ export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
         exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
         style={{ perspective: 1600 }}
       >
+        <BlobField />
+
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: opening ? 0 : 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="font-ui absolute top-10 z-10 text-[11px] tracking-[0.4em] text-muted"
+          className="font-ui absolute top-10 z-10 rounded-full bg-ink px-4 py-1.5 text-[11px] font-bold tracking-[0.3em] text-white"
         >
-          دعوة زفاف
+          دعوة زفاف ✨
         </motion.p>
 
-        {/* Envelope */}
+        {/* Card */}
         <motion.button
           onClick={handleClick}
           disabled={opening}
           animate={
             opening
-              ? { opacity: 0, scale: 0.94, y: -10 }
-              : { opacity: 1, scale: 1, y: 0 }
+              ? { opacity: 0, scale: 0.9, rotate: 6, y: -20 }
+              : { opacity: 1, scale: 1, rotate: 0, y: 0 }
           }
-          whileHover={opening ? {} : { y: -4 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ duration: 0.8, delay: opening ? 0.5 : 0, ease: [0.65, 0, 0.35, 1] }}
-          className="relative z-10 flex aspect-[3/4] w-[19rem] flex-col items-center overflow-hidden rounded-2xl border border-[var(--line)] bg-surface shadow-[0_20px_50px_-24px_rgba(33,32,29,0.25)] sm:w-[22rem]"
+          whileHover={opening ? {} : { y: -6, rotate: -1 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ duration: 0.7, delay: opening ? 0.4 : 0, ease: [0.65, 0, 0.35, 1] }}
+          className="relative z-10 flex aspect-[3/4] w-[19rem] flex-col items-center justify-center gap-5 overflow-hidden rounded-[2rem] bg-surface p-8 text-center shadow-[0_30px_70px_-24px_rgba(32,18,39,0.4)] sm:w-[22rem]"
+          style={{ border: "3px solid var(--ink)" }}
         >
-          {/* top flap */}
           <motion.div
-            className="absolute inset-x-0 top-0 z-20 h-1/2 origin-top"
-            style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }}
-            animate={opening ? { rotateX: 165 } : { rotateX: 0 }}
-            transition={{ duration: 0.85, ease: [0.65, 0, 0.35, 1] }}
-          >
-            <div className="relative h-full w-full bg-surface">
-              <FloralVine className="absolute -left-2 top-0 h-full w-14" />
-              <FloralVine className="absolute -right-2 top-0 h-full w-14 scale-x-[-1]" />
-            </div>
-          </motion.div>
+            animate={{ rotate: [0, 8, -8, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="absolute -right-6 -top-6 h-20 w-20 rounded-full opacity-80"
+            style={{ background: "var(--gold)" }}
+          />
+          <motion.div
+            animate={{ rotate: [0, -10, 10, 0] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full opacity-70"
+            style={{ background: "var(--emerald)" }}
+          />
 
-          {/* bottom flap (static base) */}
-          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-bg">
-            <div className="relative h-full w-full">
-              <FloralVine className="absolute -left-2 bottom-0 h-full w-14 rotate-180" />
-              <FloralVine className="absolute -right-2 bottom-0 h-full w-14 rotate-180 scale-x-[-1]" />
-            </div>
-          </div>
-
-          {/* seal */}
+          {/* seal / monogram */}
           <motion.div
             animate={
               opening
-                ? { scale: [1, 1.1, 0], opacity: [1, 1, 0] }
-                : { scale: 1, opacity: 1 }
+                ? { scale: [1, 1.15, 0], opacity: [1, 1, 0] }
+                : { scale: [1, 1.05, 1] }
             }
-            transition={{ duration: 0.45, times: [0, 0.4, 1] }}
-            className="absolute left-1/2 top-1/2 z-30 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-ink shadow-lg"
+            transition={
+              opening
+                ? { duration: 0.45, times: [0, 0.4, 1] }
+                : { duration: 2.5, repeat: Infinity }
+            }
+            className="relative z-10 flex h-24 w-24 items-center justify-center rounded-full shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, var(--magenta), var(--violet))",
+            }}
           >
-            <span className="font-display text-2xl leading-none text-bg">
+            <span className="font-display text-3xl leading-none text-white">
               أ&amp;ن
             </span>
           </motion.div>
 
+          <p className="font-display relative z-10 text-2xl text-ink">
+            أحمد <span className="gradient-text font-bold">&amp;</span> ندى
+          </p>
+
+          <p className="font-ui relative z-10 text-xs text-muted">
+            يتشرفان بدعوتكم
+          </p>
+
           {/* tap to open label */}
           <motion.div
-            animate={{ opacity: opening ? 0 : 1, y: opening ? 10 : [0, -5, 0] }}
+            animate={{ opacity: opening ? 0 : 1, y: opening ? 10 : [0, -6, 0] }}
             transition={{
               opacity: { duration: 0.4 },
-              y: { duration: 1.8, repeat: opening ? 0 : Infinity },
+              y: { duration: 1.6, repeat: opening ? 0 : Infinity },
             }}
-            className="absolute bottom-10 z-20 flex flex-col items-center gap-1.5"
+            className="relative z-10 mt-2 flex flex-col items-center gap-1.5"
           >
-            <span className="text-accent">︿</span>
-            <span className="font-ui text-[10px] tracking-[0.3em] text-muted">
-              اضغط للفتح
+            <span
+              className="font-ui inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold text-white shadow-md"
+              style={{ background: "var(--ink)" }}
+            >
+              👆 اضغط للفتح
             </span>
           </motion.div>
         </motion.button>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: opening ? 0 : 1 }}
-          transition={{ duration: 0.6 }}
-          className="font-display absolute bottom-10 z-10 text-lg text-ink/70"
-        >
-          أحمد <span className="text-accent">&amp;</span> ندى
-        </motion.p>
       </motion.div>
     </AnimatePresence>
   );

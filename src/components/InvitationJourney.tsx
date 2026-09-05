@@ -9,6 +9,7 @@ import EventCard from "@/components/EventCard";
 import ScrollProgress from "@/components/ScrollProgress";
 import AmbientSound from "@/components/AmbientSound";
 import MagneticButton from "@/components/MagneticButton";
+import BlobField from "@/components/BlobField";
 
 export default function InvitationJourney() {
   const heroRef = useRef<HTMLElement>(null);
@@ -25,7 +26,7 @@ export default function InvitationJourney() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="relative min-h-screen w-full bg-bg"
+      className="relative min-h-screen w-full overflow-hidden bg-bg"
     >
       <ScrollProgress />
       <AmbientSound />
@@ -36,8 +37,10 @@ export default function InvitationJourney() {
         style={{ y: heroY, opacity: heroOpacity }}
         className="relative flex min-h-screen flex-col items-center justify-center px-6 py-24 text-center"
       >
+        <BlobField />
+
         <Reveal>
-          <span className="font-ui inline-block rounded-full border border-[var(--line)] px-4 py-1.5 text-xs tracking-widest text-muted">
+          <span className="font-ui inline-block rounded-full bg-ink px-4 py-1.5 text-xs font-bold tracking-widest text-white">
             بسم الله الرحمن الرحيم
           </span>
         </Reveal>
@@ -47,43 +50,52 @@ export default function InvitationJourney() {
             ﴿وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا
             لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً﴾
           </p>
-          <p className="font-ui mt-3 text-xs text-muted">
+          <p className="font-ui mt-3 text-xs font-semibold text-muted">
             سورة الروم
           </p>
         </Reveal>
 
         <Reveal delay={0.25} className="mt-14">
-          <h1 className="font-display text-6xl leading-none text-ink sm:text-8xl">
-            أحمد
-            <span className="heartbeat mx-3 inline-block text-accent">&amp;</span>
-            ندى
+          <h1 className="font-display text-6xl leading-none sm:text-8xl">
+            <span className="text-ink">أحمد</span>
+            <motion.span
+              animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }}
+              transition={{ duration: 2.4, repeat: Infinity }}
+              className="mx-3 inline-block gradient-text"
+            >
+              &amp;
+            </motion.span>
+            <span className="text-ink">ندى</span>
           </h1>
         </Reveal>
 
         <Reveal delay={0.4} className="mt-6">
-          <p className="font-ui text-sm text-muted">
-            يتشرفان بدعوتكم لمشاركتهما أجمل لحظات حياتهما
+          <p className="font-ui text-sm font-medium text-muted">
+            يتشرفان بدعوتكم لمشاركتهما أجمل لحظات حياتهما 🎉
           </p>
         </Reveal>
 
         <Reveal delay={0.55} className="mt-20">
           <motion.div
-            animate={{ y: [0, 8, 0] }}
+            animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.8, repeat: Infinity }}
-            className="flex flex-col items-center gap-2 text-muted"
+            className="flex flex-col items-center gap-2"
           >
-            <span className="font-ui text-[11px] tracking-widest">مرر لأسفل</span>
-            <span className="text-accent">↓</span>
+            <span className="font-ui text-[11px] font-bold tracking-widest text-muted">
+              مرر لأسفل
+            </span>
+            <span className="text-2xl">👇</span>
           </motion.div>
         </Reveal>
       </motion.section>
 
       {/* COUNTDOWN */}
-      <section className="flex flex-col items-center justify-center gap-10 px-6 py-24 text-center">
+      <section className="relative flex flex-col items-center justify-center gap-10 px-6 py-28 text-center">
+        <BlobField />
         <Reveal>
-          <SectionIndex n="01" label="العد التنازلي" />
+          <SectionIndex n="01" label="العد التنازلي" color="var(--magenta)" />
           <h2 className="font-display mt-4 text-3xl text-ink">
-            بداية حكايتنا
+            بداية حكايتنا 💫
           </h2>
         </Reveal>
         <Reveal delay={0.15}>
@@ -92,29 +104,38 @@ export default function InvitationJourney() {
       </section>
 
       {/* STORY */}
-      <section className="flex flex-col items-center justify-center gap-8 px-6 py-24 text-center">
+      <section className="relative flex flex-col items-center justify-center gap-8 px-6 py-28 text-center">
+        <BlobField />
         <Reveal>
-          <SectionIndex n="02" label="كلمة منّا" />
+          <SectionIndex n="02" label="كلمة منّا" color="var(--emerald)" />
         </Reveal>
         <Reveal delay={0.15} className="max-w-lg">
-          <p className="font-body text-xl leading-relaxed text-ink/85">
-            حكايتنا بدأت بابتسامة، وكبرت بالثقة، والآن نكتب أول صفحة من
-            كتابنا سويًا — وأنتم جزء لا يكتمل الفرح بدونه.
-          </p>
+          <motion.div
+            whileHover={{ rotate: -1, scale: 1.02 }}
+            className="rounded-[2rem] bg-surface p-8 shadow-[0_25px_60px_-25px_rgba(32,18,39,0.35)]"
+            style={{ border: "3px solid var(--ink)" }}
+          >
+            <p className="text-4xl">💌</p>
+            <p className="font-body mt-4 text-xl leading-relaxed text-ink/85">
+              حكايتنا بدأت بابتسامة، وكبرت بالثقة، والآن نكتب أول صفحة من
+              كتابنا سويًا — وأنتم جزء لا يكتمل الفرح بدونه.
+            </p>
+          </motion.div>
         </Reveal>
       </section>
 
       {/* EVENT 1 */}
-      <section className="flex flex-col items-center justify-center gap-10 px-6 py-24 text-center">
+      <section className="relative flex flex-col items-center justify-center gap-10 px-6 py-28 text-center">
+        <BlobField />
         <Reveal>
-          <SectionIndex n="03" label="عقد القران" />
+          <SectionIndex n="03" label="عقد القران" color="var(--gold-deep)" />
           <h2 className="font-display mt-4 text-3xl text-ink sm:text-4xl">
             إشهار عقد القران
           </h2>
         </Reveal>
 
         <EventCard
-          index="01"
+          icon="📖"
           eyebrow="عقد القران"
           title="ليلة الاشهار"
           day="١١"
@@ -123,20 +144,22 @@ export default function InvitationJourney() {
           timeLabel="بعد صلاة العصر مباشرة"
           venue="مسجد فجر الإسلام"
           mapUrl="https://maps.app.goo.gl/hKN4xiw5rDgaYSLUA"
+          color="var(--gold-deep)"
         />
       </section>
 
       {/* EVENT 2 */}
-      <section className="flex flex-col items-center justify-center gap-10 px-6 py-24 text-center">
+      <section className="relative flex flex-col items-center justify-center gap-10 px-6 py-28 text-center">
+        <BlobField />
         <Reveal>
-          <SectionIndex n="04" label="حفل الزفاف" />
+          <SectionIndex n="04" label="حفل الزفاف" color="var(--magenta)" />
           <h2 className="font-display mt-4 text-3xl text-ink sm:text-4xl">
             ليلة الزفاف
           </h2>
         </Reveal>
 
         <EventCard
-          index="02"
+          icon="💍"
           eyebrow="حفل الزفاف"
           title="ليلة العمر"
           day="١٢"
@@ -145,15 +168,17 @@ export default function InvitationJourney() {
           timeLabel="بعد صلاة العشاء"
           venue="قاعة الياسمين - بهورين"
           mapUrl="https://maps.app.goo.gl/uiuDPHTdJgqz91DL8"
+          color="var(--magenta)"
         />
       </section>
 
       {/* CLOSING */}
-      <section className="flex flex-col items-center justify-center gap-8 px-6 py-28 text-center">
+      <section className="relative flex flex-col items-center justify-center gap-8 px-6 py-28 text-center">
+        <BlobField />
         <Reveal>
-          <SectionIndex n="05" label="بانتظاركم" />
+          <SectionIndex n="05" label="بانتظاركم" color="var(--violet)" />
           <h2 className="font-display mt-4 text-3xl text-ink">
-            وجودكم هو أجمل هدية
+            وجودكم هو أجمل هدية 🎊
           </h2>
           <p className="font-ui mx-auto mt-4 max-w-md text-base leading-relaxed text-muted">
             جهزوا رقصاتكم وابتساماتكم، فالفرحة ناقصة إلا بيكم — نراكم على
@@ -161,9 +186,25 @@ export default function InvitationJourney() {
           </p>
         </Reveal>
 
-        <Reveal delay={0.2} className="mt-8">
+        <Reveal delay={0.15} className="mt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-3xl">
+            {["🎊", "💃", "🕺", "🎶", "💐"].map((e, i) => (
+              <motion.span
+                key={e}
+                whileHover={{ scale: 1.4, rotate: 15 }}
+                className={i % 2 === 0 ? "float-slow" : "float-slow-2"}
+              >
+                {e}
+              </motion.span>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.3} className="mt-8">
           <MagneticButton className="inline-block cursor-default">
-            <p className="font-display text-3xl text-ink">أحمد &amp; ندى</p>
+            <p className="font-display gradient-text text-4xl font-bold">
+              أحمد &amp; ندى
+            </p>
           </MagneticButton>
         </Reveal>
       </section>
