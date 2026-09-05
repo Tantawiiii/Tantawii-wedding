@@ -1,49 +1,73 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { getZaffaEngine } from "@/lib/zaffaEngine";
+import { motion, AnimatePresence } from "framer-motion";
+import { VolumeX, Music } from "lucide-react";
+import { getWeddingSong, playWeddingSong, isWeddingSongPlaying } from "@/lib/weddingSong";
 
 export default function AmbientSound() {
-  const [enabled, setEnabled] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
-    const engine = getZaffaEngine();
-    engine.start();
-    engine.resume();
-    engine.setMuted(false);
-
-    return () => {
-      // keep playing across re-renders of this component; only real unmount
-      // of the whole app would call dispose, which we don't need here.
-    };
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsPlaying(isWeddingSongPlaying());
   }, []);
 
-  const toggle = () => {
-    const engine = getZaffaEngine();
-    const next = !enabled;
-    engine.setMuted(!next);
-    if (next) engine.resume();
-    setEnabled(next);
+  const toggleSound = () => {
+    const song = getWeddingSong();
+    if (isPlaying) {
+      song.pause();
+      setIsPlaying(false);
+    } else {
+      playWeddingSong();
+      setIsPlaying(true);
+    }
   };
 
   return (
-    <motion.button
-      onClick={toggle}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 0.5, duration: 0.6 }}
-      whileHover={{ scale: 1.08 }}
-      whileTap={{ scale: 0.92 }}
-      aria-label={enabled ? "كتم الموسيقى" : "تشغيل الموسيقى"}
-      className="fixed bottom-5 left-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-ink text-lg text-white shadow-lg"
-    >
-      <motion.span
-        animate={enabled ? { scale: [1, 1.15, 1] } : { scale: 1 }}
-        transition={{ duration: 1.6, repeat: enabled ? Infinity : 0 }}
+    <div className="fixed bottom-6 left-6 z-50 flex items-center gap-3">
+      {/* Track info popup */}
+      <AnimatePresence>
+        {showTooltip && (
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            className="hidden sm:flex items-center gap-2 rounded-full border border-[#d4af37]/40 bg-[#051e16]/90 px-3.5 py-1.5 text-[11px] font-semibold text-[#f7e7a9] backdrop-blur-md shadow-lg"
+          >
+            <Music className="h-3.5 w-3.5 text-[#ffd700]" />
+            <span>ليلة عمرنا - موسيقى الحفل</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main Luxury Music Button */}
+      <motion.button
+        onClick={toggleSound}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.94 }}
+        aria-label={isPlaying ? "كتم الموسيقى" : "تشغيل الموسيقى"}
+        className="gold-glow relative flex h-13 w-13 items-center justify-center rounded-full border border-[#d4af37] bg-gradient-to-br from-[#0b3829] to-[#041a13] text-[#f7e7a9] shadow-xl"
       >
-        {enabled ? "🎶" : "🔇"}
-      </motion.span>
-    </motion.button>
+        {/* Equalizer animation bars inside button */}
+        {isPlaying ? (
+          <div className="flex items-end gap-[3px] h-4">
+            <span className="w-[3px] bg-[#ffd700] rounded-full animate-[equalizer_0.8s_ease-in-out_infinite] h-3" />
+            <span className="w-[3px] bg-[#ffd700] rounded-full animate-[equalizer_1.1s_ease-in-out_infinite] h-4" />
+            <span className="w-[3px] bg-[#ffd700] rounded-full animate-[equalizer_0.7s_ease-in-out_infinite] h-2" />
+          </div>
+        ) : (
+          <VolumeX className="h-5 w-5 text-[#f7e7a9]/70" />
+        )}
+
+        {/* Pulse ring when playing */}
+        {isPlaying && (
+          <span className="absolute -inset-1 rounded-full border border-[#d4af37]/40 animate-ping opacity-25 pointer-events-none" />
+        )}
+      </motion.button>
+    </div>
   );
 }
