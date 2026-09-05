@@ -1,111 +1,162 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef } from "react";
-import Reveal from "./Reveal";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Calendar, Clock, Navigation, Check, Sparkles } from "lucide-react";
+
+interface EventCardProps {
+  badge: string;
+  title: string;
+  dayNumber: string;
+  monthYear: string;
+  weekday: string;
+  timeText: string;
+  prayerNote: string;
+  venueName: string;
+  venueDetails: string;
+  mapUrl: string;
+  calendarTitle: string;
+  calendarDateStart: string; // ISO string e.g. "20260911T143000Z"
+  calendarDateEnd: string;
+}
 
 export default function EventCard({
-  eyebrow,
+  badge,
   title,
-  day,
-  month,
+  dayNumber,
+  monthYear,
   weekday,
-  timeLabel,
-  venue,
+  timeText,
+  prayerNote,
+  venueName,
+  venueDetails,
   mapUrl,
-  color,
-}: {
-  eyebrow: string;
-  title: string;
-  day: string;
-  month: string;
-  weekday: string;
-  timeLabel: string;
-  venue: string;
-  mapUrl: string;
-  color: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [4, -4]), { stiffness: 220, damping: 22 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-4, 4]), { stiffness: 220, damping: 22 });
+  calendarTitle,
+  calendarDateStart,
+  calendarDateEnd,
+}: EventCardProps) {
+  const [copied, setCopied] = useState(false);
 
-  const handleMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  };
-  const handleLeave = () => {
-    mx.set(0.5);
-    my.set(0.5);
+  // Direct Google Calendar Add Link
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+    calendarTitle
+  )}&dates=${calendarDateStart}/${calendarDateEnd}&details=${encodeURIComponent(
+    `حفل زفاف أحمد وندى في ${venueName}. نتشرف بحضوركم الكريم.`
+  )}&location=${encodeURIComponent(venueName)}`;
+
+  const handleCopyVenue = () => {
+    navigator.clipboard.writeText(venueName);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <Reveal className="w-full max-w-md" scale={0.96} y={20}>
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        style={{ rotateX: rx, rotateY: ry, perspective: 1200 }}
-        whileHover={{ y: -6 }}
-        className="tilt-card relative overflow-hidden rounded-[1.75rem] bg-surface shadow-[0_30px_60px_-28px_rgba(32,18,39,0.4)]"
-      >
-        {/* top accent bar */}
-        <div className="h-1.5 w-full" style={{ background: color }} />
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7 }}
+      className="luxury-card relative flex flex-col justify-between overflow-hidden rounded-3xl p-6 sm:p-8 text-right transition-all hover:shadow-[0_25px_60px_-15px_rgba(203,161,53,0.25)] hover:border-[#d4af37]/60"
+    >
+      {/* Top Gilded Accent Bar */}
+      <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#0b3829] via-[#d4af37] to-[#0b3829]" />
 
-        <div className="flex items-stretch">
-          {/* date column */}
-          <div
-            className="flex w-24 flex-shrink-0 flex-col items-center justify-center gap-1 py-8 text-white sm:w-28"
-            style={{ background: color }}
-          >
-            <span className="font-ui num-badge text-4xl font-extrabold leading-none sm:text-5xl">
-              {day}
+      <div>
+        {/* Badge & Occasion */}
+        <div className="flex items-center justify-between gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#d4af37]/40 bg-[#cba135]/15 px-3.5 py-1 text-xs font-bold text-[#ab7f17]">
+            <Sparkles className="h-3 w-3 text-[#cba135]" />
+            {badge}
+          </span>
+          <span className="font-ui text-xs font-semibold text-[#5e6d64]">
+            {weekday}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3 className="font-display mt-4 text-2xl sm:text-3xl font-bold text-[#0b3829]">
+          {title}
+        </h3>
+
+        {/* Date & Time Container */}
+        <div className="mt-5 flex items-stretch gap-4 rounded-2xl border border-[#d4af37]/20 bg-[#fbf9f5] p-4">
+          {/* Day Big Badge */}
+          <div className="flex w-20 flex-shrink-0 flex-col items-center justify-center rounded-xl border border-[#d4af37]/40 bg-gradient-to-b from-[#0b3829] to-[#051e16] p-2 text-center text-white shadow-sm">
+            <span className="font-ui text-3xl sm:text-4xl font-extrabold text-[#f7e7a9] leading-none">
+              {dayNumber}
             </span>
-            <span className="font-ui text-[11px] opacity-90">{month}</span>
+            <span className="font-ui mt-1 text-[10px] font-medium text-[#ffd700]/90">
+              {monthYear}
+            </span>
           </div>
 
-          {/* content */}
-          <div className="flex flex-1 flex-col justify-center gap-2 px-6 py-7 text-right">
-            <span
-              className="font-ui text-[11px] font-bold tracking-[0.2em]"
-              style={{ color }}
-            >
-              {eyebrow}
-            </span>
-            <h3 className="font-display text-2xl text-ink">{title}</h3>
-            <p className="font-ui text-xs text-muted">
-              {weekday} · {timeLabel}
+          {/* Time & Prayer Schedule */}
+          <div className="flex flex-1 flex-col justify-center">
+            <div className="flex items-center gap-1.5 text-sm font-bold text-[#1b2820]">
+              <Clock className="h-4 w-4 text-[#ab7f17]" />
+              <span>{timeText}</span>
+            </div>
+            <p className="font-ui mt-1 text-xs font-semibold text-[#ab7f17]">
+              {prayerNote}
             </p>
           </div>
         </div>
 
-        <div className="hairline" />
-
-        <div className="flex flex-col gap-4 px-6 py-6 text-right">
-          <div>
-            <p className="font-ui text-[11px] font-semibold tracking-wide text-muted">
+        {/* Venue Information */}
+        <div className="mt-6 flex flex-col gap-1.5">
+          <div className="flex items-center justify-between">
+            <span className="font-ui text-xs font-semibold text-[#5e6d64]">
               مكان الحفل
-            </p>
-            <p className="font-body mt-1 text-lg text-ink">{venue}</p>
+            </span>
+            <button
+              onClick={handleCopyVenue}
+              className="text-[11px] font-semibold text-[#ab7f17] hover:underline flex items-center gap-1"
+            >
+              {copied ? (
+                <>
+                  <Check className="h-3 w-3 text-emerald-600" />
+                  <span>تم نسخ الاسم</span>
+                </>
+              ) : (
+                <span>نسخ اسم المكان</span>
+              )}
+            </button>
           </div>
 
-          <motion.a
-            href={mapUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            className="font-ui inline-flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-white shadow-md transition-opacity hover:opacity-90"
-            style={{ background: color }}
-          >
-            <span>📍 افتح الموقع على الخريطة</span>
-          </motion.a>
+          <p className="font-display text-xl sm:text-2xl font-bold text-[#0b3829]">
+            {venueName}
+          </p>
+          <p className="font-ui text-xs text-[#5e6d64] leading-relaxed">
+            {venueDetails}
+          </p>
         </div>
-      </motion.div>
-    </Reveal>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="mt-8 flex flex-col sm:flex-row items-center gap-3">
+        {/* Google Maps Button */}
+        <a
+          href={mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-full flex-1 items-center justify-center gap-2 rounded-xl border border-[#d4af37] bg-gradient-to-r from-[#0b3829] to-[#051e16] py-3 px-4 text-xs sm:text-sm font-bold text-[#f7e7a9] shadow-md transition-transform hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <Navigation className="h-4 w-4 text-[#ffd700]" />
+          <span>الموقع على خرائط Google</span>
+        </a>
+
+        {/* Add to Calendar Button */}
+        <a
+          href={googleCalendarUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-full sm:w-auto items-center justify-center gap-1.5 rounded-xl border border-[#d4af37]/40 bg-white px-4 py-3 text-xs sm:text-sm font-bold text-[#0b3829] shadow-sm hover:bg-[#faf6ef] transition-colors"
+          title="حفظ الموعد في تقويم Google"
+        >
+          <Calendar className="h-4 w-4 text-[#ab7f17]" />
+          <span>حفظ الموعد</span>
+        </a>
+      </div>
+    </motion.div>
   );
 }
