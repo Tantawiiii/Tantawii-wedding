@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
 import Reveal from "./Reveal";
 
 export default function EventCard({
-  index,
+  icon,
   eyebrow,
   title,
   day,
@@ -13,8 +14,9 @@ export default function EventCard({
   timeLabel,
   venue,
   mapUrl,
+  color,
 }: {
-  index: string;
+  icon: string;
   eyebrow: string;
   title: string;
   day: string;
@@ -23,50 +25,92 @@ export default function EventCard({
   timeLabel: string;
   venue: string;
   mapUrl: string;
+  color: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const rx = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 200, damping: 20 });
+  const ry = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 200, damping: 20 });
+
+  const handleMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width);
+    my.set((e.clientY - rect.top) / rect.height);
+  };
+  const handleLeave = () => {
+    mx.set(0.5);
+    my.set(0.5);
+  };
+
   return (
-    <Reveal className="w-full max-w-xl" scale={0.97} y={24}>
-      <div className="grid overflow-hidden rounded-2xl border border-[var(--line)] bg-surface sm:grid-cols-[9rem_1fr]">
-        {/* date block */}
-        <div className="flex flex-row items-center justify-between gap-2 border-b border-[var(--line)] bg-accent-soft px-6 py-6 sm:flex-col sm:justify-center sm:border-b-0 sm:border-l sm:px-4">
-          <span className="font-ui num-badge text-4xl font-semibold text-ink sm:text-5xl">
-            {day}
+    <Reveal className="w-full max-w-sm" scale={0.94}>
+      <motion.div
+        ref={ref}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        style={{ rotateX: rx, rotateY: ry, perspective: 1000 }}
+        whileHover={{ y: -8 }}
+        className="tilt-card relative overflow-hidden rounded-[2rem] bg-surface p-1.5 shadow-[0_25px_60px_-25px_rgba(32,18,39,0.45)]"
+      >
+        <div
+          className="absolute inset-0 rounded-[2rem] opacity-90"
+          style={{ background: `linear-gradient(135deg, ${color}, transparent 55%)` }}
+        />
+
+        <div className="relative overflow-hidden rounded-[1.6rem] bg-surface p-7 text-center">
+          {/* floating icon badge */}
+          <motion.div
+            animate={{ rotate: [0, -6, 6, 0] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="wiggle mx-auto -mt-14 mb-3 flex h-16 w-16 items-center justify-center rounded-2xl text-3xl text-white shadow-lg"
+            style={{ background: color }}
+          >
+            {icon}
+          </motion.div>
+
+          <span
+            className="font-ui inline-block rounded-full px-3 py-1 text-[11px] font-bold tracking-widest text-white"
+            style={{ background: color }}
+          >
+            {eyebrow}
           </span>
-          <div className="text-left sm:mt-1 sm:text-center">
-            <p className="font-ui text-xs text-muted">{month}</p>
-            <p className="font-ui text-xs text-muted">{weekday}</p>
+
+          <h3 className="font-display mt-3 text-3xl text-ink">{title}</h3>
+
+          <div className="mt-4 flex items-center justify-center gap-4">
+            <div className="flex flex-col items-center">
+              <span className="font-ui num-badge text-3xl font-extrabold" style={{ color }}>
+                {day}
+              </span>
+              <span className="font-ui text-[11px] text-muted">{month}</span>
+            </div>
+            <span className="h-9 w-px bg-[var(--line)]" />
+            <div className="text-right">
+              <p className="font-ui text-sm font-semibold text-ink">{weekday}</p>
+              <p className="font-ui text-xs text-muted">{timeLabel}</p>
+            </div>
           </div>
-        </div>
 
-        {/* content */}
-        <div className="flex flex-col justify-center gap-3 px-7 py-7 text-right">
-          <div className="flex items-center justify-between">
-            <span className="font-ui text-xs tracking-widest text-accent">
-              {eyebrow}
-            </span>
-            <span className="font-ui num-badge text-xs text-muted">{index}</span>
-          </div>
+          <div className="hairline my-5" />
 
-          <h3 className="font-display text-2xl text-ink">{title}</h3>
-          <p className="font-ui text-sm text-muted">{timeLabel}</p>
-
-          <div className="hairline my-1" />
-
-          <p className="font-ui text-base text-ink">{venue}</p>
+          <p className="font-body text-xl text-ink">{venue}</p>
 
           <motion.a
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ x: -3 }}
-            whileTap={{ scale: 0.97 }}
-            className="font-ui mt-2 inline-flex w-fit items-center gap-2 self-end rounded-full bg-ink px-5 py-2.5 text-sm text-white transition-colors hover:bg-accent"
+            whileHover={{ scale: 1.06, rotate: -1 }}
+            whileTap={{ scale: 0.95 }}
+            className="font-ui mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-md"
+            style={{ background: color }}
           >
-            <span>الموقع على الخريطة</span>
-            <span>←</span>
+            <span>📍 شوف الموقع على الخريطة</span>
           </motion.a>
         </div>
-      </div>
+      </motion.div>
     </Reveal>
   );
 }

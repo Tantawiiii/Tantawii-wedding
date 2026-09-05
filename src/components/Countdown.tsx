@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const TARGET = new Date("2026-09-11T15:30:00+02:00").getTime();
 
@@ -15,11 +16,11 @@ function getTimeLeft() {
   };
 }
 
-const units: { key: keyof ReturnType<typeof getTimeLeft>; label: string }[] = [
-  { key: "days", label: "يوم" },
-  { key: "hours", label: "ساعة" },
-  { key: "minutes", label: "دقيقة" },
-  { key: "seconds", label: "ثانية" },
+const units: { key: keyof ReturnType<typeof getTimeLeft>; label: string; color: string }[] = [
+  { key: "days", label: "يوم", color: "var(--magenta)" },
+  { key: "hours", label: "ساعة", color: "var(--gold-deep)" },
+  { key: "minutes", label: "دقيقة", color: "var(--emerald)" },
+  { key: "seconds", label: "ثانية", color: "var(--violet)" },
 ];
 
 export default function Countdown() {
@@ -35,14 +36,20 @@ export default function Countdown() {
   }, []);
 
   return (
-    <div className="flex items-stretch justify-center divide-x divide-x-reverse divide-[var(--line)] rounded-2xl border border-[var(--line)] bg-surface">
-      {units.map((u) => (
-        <div key={u.key} className="flex w-20 flex-col items-center py-6 sm:w-24">
-          <span className="font-ui num-badge text-3xl font-semibold text-ink sm:text-4xl">
+    <div className="flex items-center justify-center gap-3 sm:gap-4">
+      {units.map((u, i) => (
+        <motion.div
+          key={u.key}
+          animate={{ rotate: [0, i % 2 === 0 ? -2 : 2, 0] }}
+          transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
+          className="flex w-[4.2rem] flex-col items-center rounded-2xl py-5 text-white shadow-lg sm:w-20"
+          style={{ background: u.color }}
+        >
+          <span className="font-ui num-badge text-3xl font-extrabold sm:text-4xl">
             {time ? String(time[u.key]).padStart(2, "0") : "--"}
           </span>
-          <span className="font-ui mt-2 text-[11px] text-muted">{u.label}</span>
-        </div>
+          <span className="font-ui mt-1 text-[11px] opacity-90">{u.label}</span>
+        </motion.div>
       ))}
     </div>
   );

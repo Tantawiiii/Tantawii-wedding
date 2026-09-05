@@ -1,13 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #faf8f5;
+  --bg: #fff9f2;
   --surface: #ffffff;
-  --ink: #21201d;
-  --muted: #85807a;
-  --accent: #a8763f;
-  --accent-soft: #ede3d5;
-  --line: rgba(33, 32, 29, 0.08);
+  --ink: #201227;
+  --muted: #7c6a86;
+
+  --magenta: #e6337a;
+  --magenta-deep: #b81f5c;
+  --gold: #f4b400;
+  --gold-deep: #d99400;
+  --emerald: #12a878;
+  --emerald-deep: #0c8560;
+  --violet: #7c4dff;
+  --line: rgba(32, 18, 39, 0.08);
 }
 
 @theme inline {
@@ -15,8 +21,13 @@
   --color-surface: var(--surface);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
+  --color-magenta: var(--magenta);
+  --color-magenta-deep: var(--magenta-deep);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-emerald: var(--emerald);
+  --color-emerald-deep: var(--emerald-deep);
+  --color-violet: var(--violet);
   --font-amiri: var(--font-amiri);
   --font-aref: var(--font-aref);
   --font-reem: var(--font-reem);
@@ -34,14 +45,14 @@ html, body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
+  scrollbar-color: var(--magenta) transparent;
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--accent);
+  background: var(--magenta);
   border-radius: 8px;
 }
 
@@ -79,23 +90,66 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.gradient-text {
+  background: linear-gradient(100deg, var(--magenta), var(--violet) 45%, var(--gold-deep) 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pill-outline {
+  border: 2px solid var(--ink);
+}
+
+@keyframes blobMorph {
+  0%, 100% { border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%; }
+  33% { border-radius: 60% 40% 45% 55% / 55% 60% 40% 45%; }
+  66% { border-radius: 45% 55% 40% 60% / 40% 45% 55% 60%; }
+}
+.blob {
+  animation: blobMorph 12s ease-in-out infinite;
+}
+
 @keyframes floatSlow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-16px) rotate(3deg); }
 }
 .float-slow {
-  animation: floatSlow 6s ease-in-out infinite;
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+@keyframes floatSlow2 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-24px) rotate(-4deg); }
+}
+.float-slow-2 {
+  animation: floatSlow2 9s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+.spin-slow {
+  animation: spinSlow 16s linear infinite;
 }
 
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  15% { transform: scale(1.2); }
+  15% { transform: scale(1.25); }
   30% { transform: scale(1); }
-  45% { transform: scale(1.15); }
+  45% { transform: scale(1.18); }
   60% { transform: scale(1); }
 }
 .heartbeat {
-  animation: heartbeat 2.4s ease-in-out infinite;
+  animation: heartbeat 2.2s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+.wiggle {
+  animation: wiggle 2.5s ease-in-out infinite;
 }
 
 @keyframes marquee {
@@ -103,5 +157,5 @@ body {
   to { transform: translateX(-50%); }
 }
 .marquee-track {
-  animation: marquee 22s linear infinite;
+  animation: marquee 18s linear infinite;
 }
