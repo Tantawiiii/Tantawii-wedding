@@ -1,11 +1,9 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import Reveal from "./Reveal";
 
 export default function EventCard({
-  icon,
   eyebrow,
   title,
   day,
@@ -16,7 +14,6 @@ export default function EventCard({
   mapUrl,
   color,
 }: {
-  icon: string;
   eyebrow: string;
   title: string;
   day: string;
@@ -27,90 +24,77 @@ export default function EventCard({
   mapUrl: string;
   color: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 200, damping: 20 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 200, damping: 20 });
-
-  const handleMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  };
-  const handleLeave = () => {
-    mx.set(0.5);
-    my.set(0.5);
-  };
-
   return (
-    <Reveal className="w-full max-w-sm" scale={0.94}>
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        style={{ rotateX: rx, rotateY: ry, perspective: 1000 }}
-        whileHover={{ y: -8 }}
-        className="tilt-card relative overflow-hidden rounded-[2rem] bg-surface p-1.5 shadow-[0_25px_60px_-25px_rgba(32,18,39,0.45)]"
+    <Reveal className="w-full max-w-sm" scale={0.96} y={20}>
+      <div
+        className="relative bg-surface px-8 py-10 text-center shadow-[0_20px_50px_-25px_rgba(32,18,39,0.35)]"
+        style={{ border: `1px solid ${color}55` }}
       >
+        {/* outer hairline frame */}
         <div
-          className="absolute inset-0 rounded-[2rem] opacity-90"
-          style={{ background: `linear-gradient(135deg, ${color}, transparent 55%)` }}
+          className="pointer-events-none absolute inset-2 border"
+          style={{ borderColor: `${color}35` }}
         />
 
-        <div className="relative overflow-hidden rounded-[1.6rem] bg-surface p-7 text-center">
-          {/* floating icon badge */}
-          <motion.div
-            animate={{ rotate: [0, -6, 6, 0] }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="wiggle mx-auto -mt-14 mb-3 flex h-16 w-16 items-center justify-center rounded-2xl text-3xl text-white shadow-lg"
-            style={{ background: color }}
+        {/* corner flourishes */}
+        {[
+          "-left-0 -top-0",
+          "-right-0 -top-0 scale-x-[-1]",
+          "-left-0 -bottom-0 scale-y-[-1]",
+          "-right-0 -bottom-0 scale-x-[-1] scale-y-[-1]",
+        ].map((pos, i) => (
+          <svg
+            key={i}
+            viewBox="0 0 40 40"
+            className={`absolute h-8 w-8 ${pos}`}
+            style={{ color }}
           >
-            {icon}
-          </motion.div>
+            <path
+              d="M2 2 L2 16 M2 2 L16 2 M2 10 Q2 2 10 2"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              fill="none"
+            />
+          </svg>
+        ))}
 
-          <span
-            className="font-ui inline-block rounded-full px-3 py-1 text-[11px] font-bold tracking-widest text-white"
-            style={{ background: color }}
-          >
-            {eyebrow}
-          </span>
+        <p
+          className="font-ui relative z-10 text-[11px] tracking-[0.35em]"
+          style={{ color }}
+        >
+          {eyebrow}
+        </p>
 
-          <h3 className="font-display mt-3 text-3xl text-ink">{title}</h3>
+        <h3 className="font-display relative z-10 mt-3 text-3xl text-ink">
+          {title}
+        </h3>
 
-          <div className="mt-4 flex items-center justify-center gap-4">
-            <div className="flex flex-col items-center">
-              <span className="font-ui num-badge text-3xl font-extrabold" style={{ color }}>
-                {day}
-              </span>
-              <span className="font-ui text-[11px] text-muted">{month}</span>
-            </div>
-            <span className="h-9 w-px bg-[var(--line)]" />
-            <div className="text-right">
-              <p className="font-ui text-sm font-semibold text-ink">{weekday}</p>
-              <p className="font-ui text-xs text-muted">{timeLabel}</p>
-            </div>
-          </div>
+        <div className="relative z-10 mx-auto mt-6 h-px w-12" style={{ background: color }} />
 
-          <div className="hairline my-5" />
-
-          <p className="font-body text-xl text-ink">{venue}</p>
-
-          <motion.a
-            href={mapUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.06, rotate: -1 }}
-            whileTap={{ scale: 0.95 }}
-            className="font-ui mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-md"
-            style={{ background: color }}
-          >
-            <span>📍 شوف الموقع على الخريطة</span>
-          </motion.a>
+        <div className="relative z-10 mt-6 flex items-baseline justify-center gap-2">
+          <span className="font-display num-badge text-4xl text-ink">{day}</span>
+          <span className="font-ui text-sm text-muted">{month}</span>
         </div>
-      </motion.div>
+        <p className="font-ui relative z-10 mt-1 text-sm text-muted">
+          {weekday} · {timeLabel}
+        </p>
+
+        <div className="relative z-10 mx-auto mt-6 h-px w-12" style={{ background: color }} />
+
+        <p className="font-body relative z-10 mt-6 text-xl text-ink">{venue}</p>
+
+        <motion.a
+          href={mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="font-ui relative z-10 mt-7 inline-flex items-center gap-2 border px-6 py-2.5 text-xs tracking-widest transition-colors"
+          style={{ borderColor: color, color }}
+        >
+          <span>الموقع على الخريطة</span>
+        </motion.a>
+      </div>
     </Reveal>
   );
 }
