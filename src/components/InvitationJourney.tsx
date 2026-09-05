@@ -135,7 +135,6 @@ export default function InvitationJourney() {
         </Reveal>
 
         <EventCard
-          icon="📖"
           eyebrow="عقد القران"
           title="ليلة الاشهار"
           day="١١"
@@ -159,7 +158,6 @@ export default function InvitationJourney() {
         </Reveal>
 
         <EventCard
-          icon="💍"
           eyebrow="حفل الزفاف"
           title="ليلة العمر"
           day="١٢"
