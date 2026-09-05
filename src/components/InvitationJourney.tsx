@@ -26,7 +26,7 @@ export default function InvitationJourney() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="relative min-h-screen w-full overflow-hidden bg-bg"
+      className="mesh-bg grain relative min-h-screen w-full overflow-hidden"
     >
       <ScrollProgress />
       <AmbientSound />
@@ -103,26 +103,6 @@ export default function InvitationJourney() {
         </Reveal>
       </section>
 
-      {/* STORY */}
-      <section className="relative flex flex-col items-center justify-center gap-8 px-6 py-28 text-center">
-        <BlobField />
-        <Reveal>
-          <SectionIndex n="02" label="كلمة منّا" color="var(--emerald)" />
-        </Reveal>
-        <Reveal delay={0.15} className="max-w-lg">
-          <motion.div
-            whileHover={{ rotate: -1, scale: 1.02 }}
-            className="rounded-[2rem] bg-surface p-8 shadow-[0_25px_60px_-25px_rgba(32,18,39,0.35)]"
-            style={{ border: "3px solid var(--ink)" }}
-          >
-            <p className="text-4xl">💌</p>
-            <p className="font-body mt-4 text-xl leading-relaxed text-ink/85">
-              حكايتنا بدأت بابتسامة، وكبرت بالثقة، والآن نكتب أول صفحة من
-              كتابنا سويًا — وأنتم جزء لا يكتمل الفرح بدونه.
-            </p>
-          </motion.div>
-        </Reveal>
-      </section>
 
       {/* EVENT 1 */}
       <section className="relative flex flex-col items-center justify-center gap-10 px-6 py-28 text-center">
@@ -175,11 +155,9 @@ export default function InvitationJourney() {
         <BlobField />
         <Reveal>
           <SectionIndex n="05" label="بانتظاركم" color="var(--violet)" />
-          <h2 className="font-display mt-4 text-3xl text-ink">
-            وجودكم هو أجمل هدية 🎊
-          </h2>
+    
           <p className="font-ui mx-auto mt-4 max-w-md text-base leading-relaxed text-muted">
-            جهزوا رقصاتكم وابتساماتكم، فالفرحة ناقصة إلا بيكم — نراكم على
+         نراكم على 
             أنغام الفرح ولحظات لا تُنسى.
           </p>
         </Reveal>

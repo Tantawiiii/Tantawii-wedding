@@ -3,12 +3,13 @@
 import { motion } from "framer-motion";
 
 const BLOBS = [
-  { color: "var(--magenta)", size: 280, top: "4%", left: "-8%", dur: 13, op: 0.5 },
-  { color: "var(--gold)", size: 220, top: "18%", left: "78%", dur: 16, op: 0.55 },
-  { color: "var(--emerald)", size: 260, top: "55%", left: "-10%", dur: 15, op: 0.45 },
-  { color: "var(--violet)", size: 200, top: "70%", left: "82%", dur: 18, op: 0.4 },
-  { color: "var(--gold)", size: 180, top: "88%", left: "10%", dur: 14, op: 0.4 },
-  { color: "var(--magenta)", size: 200, top: "38%", left: "45%", dur: 20, op: 0.25 },
+  { color: "var(--magenta)", size: 300, top: "0%", left: "-10%", dur: 12, op: 0.45 },
+  { color: "var(--gold)", size: 240, top: "15%", left: "80%", dur: 15, op: 0.5 },
+  { color: "var(--emerald)", size: 280, top: "58%", left: "-12%", dur: 14, op: 0.4 },
+  { color: "var(--violet)", size: 220, top: "68%", left: "85%", dur: 17, op: 0.4 },
+  { color: "var(--gold)", size: 190, top: "90%", left: "8%", dur: 13, op: 0.35 },
+  { color: "var(--magenta)", size: 210, top: "35%", left: "48%", dur: 19, op: 0.22 },
+  { color: "var(--emerald)", size: 170, top: "10%", left: "42%", dur: 16, op: 0.2 },
 ];
 
 export default function BlobField() {

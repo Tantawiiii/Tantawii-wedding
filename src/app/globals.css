@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #fff9f2;
+  --bg: #fdf5f7;
   --surface: #ffffff;
   --ink: #201227;
   --muted: #7c6a86;
@@ -158,4 +158,24 @@ body {
 }
 .marquee-track {
   animation: marquee 18s linear infinite;
+}
+
+.mesh-bg {
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 0%, rgba(230, 51, 122, 0.10), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 95% 15%, rgba(244, 180, 0, 0.12), transparent 55%),
+    radial-gradient(ellipse 55% 50% at 0% 90%, rgba(18, 168, 120, 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 55% at 100% 100%, rgba(124, 77, 255, 0.10), transparent 55%),
+    var(--bg);
+}
+
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
