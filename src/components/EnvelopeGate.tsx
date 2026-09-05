@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import BlobField from "./BlobField";
+import { getZaffaEngine } from "@/lib/zaffaEngine";
 
 export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
   const [opening, setOpening] = useState(false);
@@ -10,6 +11,7 @@ export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
   const handleClick = () => {
     if (opening) return;
     setOpening(true);
+    getZaffaEngine().start();
     setTimeout(() => {
       onOpen();
     }, 1100);
@@ -18,7 +20,7 @@ export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-bg p-5"
+        className="mesh-bg grain fixed inset-0 z-50 flex items-center justify-center overflow-hidden p-5"
         exit={{ opacity: 0, transition: { duration: 0.4, ease: "easeInOut" } }}
       >
         <BlobField />

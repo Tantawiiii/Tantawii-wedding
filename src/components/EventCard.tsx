@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
 import Reveal from "./Reveal";
 
 export default function EventCard({
@@ -24,77 +25,87 @@ export default function EventCard({
   mapUrl: string;
   color: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const rx = useSpring(useTransform(my, [0, 1], [4, -4]), { stiffness: 220, damping: 22 });
+  const ry = useSpring(useTransform(mx, [0, 1], [-4, 4]), { stiffness: 220, damping: 22 });
+
+  const handleMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width);
+    my.set((e.clientY - rect.top) / rect.height);
+  };
+  const handleLeave = () => {
+    mx.set(0.5);
+    my.set(0.5);
+  };
+
   return (
-    <Reveal className="w-full max-w-sm" scale={0.96} y={20}>
-      <div
-        className="relative bg-surface px-8 py-10 text-center shadow-[0_20px_50px_-25px_rgba(32,18,39,0.35)]"
-        style={{ border: `1px solid ${color}55` }}
+    <Reveal className="w-full max-w-md" scale={0.96} y={20}>
+      <motion.div
+        ref={ref}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        style={{ rotateX: rx, rotateY: ry, perspective: 1200 }}
+        whileHover={{ y: -6 }}
+        className="tilt-card relative overflow-hidden rounded-[1.75rem] bg-surface shadow-[0_30px_60px_-28px_rgba(32,18,39,0.4)]"
       >
-        {/* outer hairline frame */}
-        <div
-          className="pointer-events-none absolute inset-2 border"
-          style={{ borderColor: `${color}35` }}
-        />
+        {/* top accent bar */}
+        <div className="h-1.5 w-full" style={{ background: color }} />
 
-        {/* corner flourishes */}
-        {[
-          "-left-0 -top-0",
-          "-right-0 -top-0 scale-x-[-1]",
-          "-left-0 -bottom-0 scale-y-[-1]",
-          "-right-0 -bottom-0 scale-x-[-1] scale-y-[-1]",
-        ].map((pos, i) => (
-          <svg
-            key={i}
-            viewBox="0 0 40 40"
-            className={`absolute h-8 w-8 ${pos}`}
-            style={{ color }}
+        <div className="flex items-stretch">
+          {/* date column */}
+          <div
+            className="flex w-24 flex-shrink-0 flex-col items-center justify-center gap-1 py-8 text-white sm:w-28"
+            style={{ background: color }}
           >
-            <path
-              d="M2 2 L2 16 M2 2 L16 2 M2 10 Q2 2 10 2"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              fill="none"
-            />
-          </svg>
-        ))}
+            <span className="font-ui num-badge text-4xl font-extrabold leading-none sm:text-5xl">
+              {day}
+            </span>
+            <span className="font-ui text-[11px] opacity-90">{month}</span>
+          </div>
 
-        <p
-          className="font-ui relative z-10 text-[11px] tracking-[0.35em]"
-          style={{ color }}
-        >
-          {eyebrow}
-        </p>
-
-        <h3 className="font-display relative z-10 mt-3 text-3xl text-ink">
-          {title}
-        </h3>
-
-        <div className="relative z-10 mx-auto mt-6 h-px w-12" style={{ background: color }} />
-
-        <div className="relative z-10 mt-6 flex items-baseline justify-center gap-2">
-          <span className="font-display num-badge text-4xl text-ink">{day}</span>
-          <span className="font-ui text-sm text-muted">{month}</span>
+          {/* content */}
+          <div className="flex flex-1 flex-col justify-center gap-2 px-6 py-7 text-right">
+            <span
+              className="font-ui text-[11px] font-bold tracking-[0.2em]"
+              style={{ color }}
+            >
+              {eyebrow}
+            </span>
+            <h3 className="font-display text-2xl text-ink">{title}</h3>
+            <p className="font-ui text-xs text-muted">
+              {weekday} · {timeLabel}
+            </p>
+          </div>
         </div>
-        <p className="font-ui relative z-10 mt-1 text-sm text-muted">
-          {weekday} · {timeLabel}
-        </p>
 
-        <div className="relative z-10 mx-auto mt-6 h-px w-12" style={{ background: color }} />
+        <div className="hairline" />
 
-        <p className="font-body relative z-10 mt-6 text-xl text-ink">{venue}</p>
+        <div className="flex flex-col gap-4 px-6 py-6 text-right">
+          <div>
+            <p className="font-ui text-[11px] font-semibold tracking-wide text-muted">
+              مكان الحفل
+            </p>
+            <p className="font-body mt-1 text-lg text-ink">{venue}</p>
+          </div>
 
-        <motion.a
-          href={mapUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="font-ui relative z-10 mt-7 inline-flex items-center gap-2 border px-6 py-2.5 text-xs tracking-widest transition-colors"
-          style={{ borderColor: color, color }}
-        >
-          <span>الموقع على الخريطة</span>
-        </motion.a>
-      </div>
+          <motion.a
+            href={mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            className="font-ui inline-flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-white shadow-md transition-opacity hover:opacity-90"
+            style={{ background: color }}
+          >
+            <span>📍 افتح الموقع على الخريطة</span>
+          </motion.a>
+        </div>
+      </motion.div>
     </Reveal>
   );
 }
