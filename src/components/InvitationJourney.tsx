@@ -85,7 +85,7 @@ export default function InvitationJourney() {
             />
           </div>
 
-          {/* Etiquette & Dress Code Callout */}
+          {/* Etiquette & Dress Code Callout
           <div className="luxury-card mt-12 mx-auto max-w-3xl rounded-2xl p-5 sm:p-6 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
             <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d4af37] bg-[#faf6ef] text-[#ab7f17]">
               <ShieldCheck className="h-5 w-5" />
@@ -98,7 +98,7 @@ export default function InvitationJourney() {
                 الزي الرسمي الفاخر (Formal / Black Tie) · حضوركم ومشاركتكم فرحتنا هي أثمن وأغلى الهدايا لقلوبنا 🤍
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
