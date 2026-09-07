@@ -76,6 +76,14 @@ html, body {
   font-family: var(--font-aref), serif;
 }
 
+.font-couple {
+  font-family: var(--font-amiri), serif;
+}
+
+.font-amiri {
+  font-family: var(--font-amiri), serif;
+}
+
 .font-body {
   font-family: var(--font-amiri), serif;
 }
