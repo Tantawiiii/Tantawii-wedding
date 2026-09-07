@@ -43,7 +43,7 @@ export default function Navbar() {
             <span className="font-display text-sm font-bold">أ&amp;ن</span>
           </div>
           <div className="hidden sm:flex flex-col">
-            <span className="font-display text-base font-bold text-[#0b3829]">
+            <span className="font-amiri text-base font-bold text-[#0b3829]">
               أحمد &amp; ندى
             </span>
             <span className="font-ui text-[10px] text-[#ab7f17] tracking-wider">

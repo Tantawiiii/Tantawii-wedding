@@ -58,7 +58,7 @@ export default function HeroSection() {
           تتشرف عائلتا العروسين بدعوتكم لحفل زفاف
         </p>
 
-        <h1 className="font-display mt-4 text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight">
+        <h1 className="font-amiri mt-4 text-5xl sm:text-7xl md:text-8xl font-bold py-1">
           <span className="gold-gradient-text drop-shadow-[0_2px_12px_rgba(203,161,53,0.3)]">
             أحمد
           </span>

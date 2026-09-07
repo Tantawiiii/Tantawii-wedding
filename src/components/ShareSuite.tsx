@@ -124,7 +124,7 @@ export default function ShareSuite() {
           <p className="font-display text-2xl sm:text-3xl font-bold text-[#0b3829]">
             بانتظار تشريفكم الكريم بكل حب وشوق
           </p>
-          <p className="font-display text-4xl sm:text-5xl font-extrabold gold-gradient-text mt-1">
+          <p className="font-amiri text-4xl sm:text-5xl font-bold gold-gradient-text mt-1">
             أحمد &amp; ندى
           </p>
           <p className="font-ui text-xs text-[#ab7f17] mt-1 tracking-widest">

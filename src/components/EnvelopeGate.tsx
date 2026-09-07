@@ -98,7 +98,7 @@ export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
                   </p>
 
                   <div className="my-1">
-                    <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight">
+                    <h1 className="font-amiri text-4xl sm:text-5xl font-bold">
                       <span className="gold-gradient-text">أحمد</span>
                       <span className="mx-2 text-2xl text-[#0b3829] font-normal">&amp;</span>
                       <span className="gold-gradient-text">ندى</span>
@@ -153,7 +153,7 @@ export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
                   <span className="font-ui text-[10px] font-semibold tracking-widest text-[#ffd700]/80 block">
                     دعوة زفاف
                   </span>
-                  <p className="font-display text-2xl font-bold text-[#f7e7a9] mt-1">
+                  <p className="font-amiri text-2xl font-bold text-[#f7e7a9] mt-1">
                     أحمد
                   </p>
                 </div>
@@ -187,7 +187,7 @@ export default function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
                   <span className="font-ui text-[10px] font-semibold tracking-widest text-[#ffd700]/80 block">
                     ليلة العمر
                   </span>
-                  <p className="font-display text-2xl font-bold text-[#f7e7a9] mt-1">
+                  <p className="font-amiri text-2xl font-bold text-[#f7e7a9] mt-1">
                     ندى
                   </p>
                 </div>
