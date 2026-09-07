@@ -46,9 +46,6 @@ export default function Navbar() {
             <span className="font-amiri text-base font-bold text-[#0b3829]">
               أحمد &amp; ندى
             </span>
-            <span className="font-ui text-[10px] text-[#ab7f17] tracking-wider">
-              دعوة زفاف ملكية
-            </span>
           </div>
         </button>
 
