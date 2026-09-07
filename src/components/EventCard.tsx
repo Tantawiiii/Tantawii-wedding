@@ -13,10 +13,9 @@ interface EventCardProps {
   timeText: string;
   prayerNote: string;
   venueName: string;
-  venueDetails: string;
   mapUrl: string;
   calendarTitle: string;
-  calendarDateStart: string; // ISO string e.g. "20260911T143000Z"
+  calendarDateStart: string;
   calendarDateEnd: string;
 }
 
@@ -29,7 +28,6 @@ export default function EventCard({
   timeText,
   prayerNote,
   venueName,
-  venueDetails,
   mapUrl,
   calendarTitle,
   calendarDateStart,
@@ -125,9 +123,6 @@ export default function EventCard({
 
           <p className="font-display text-xl sm:text-2xl font-bold text-[#0b3829]">
             {venueName}
-          </p>
-          <p className="font-ui text-xs text-[#5e6d64] leading-relaxed">
-            {venueDetails}
           </p>
         </div>
       </div>
